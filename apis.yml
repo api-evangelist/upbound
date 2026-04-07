@@ -6,10 +6,10 @@ description: >-
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
+  - Cloud Infrastructure
+  - Crossplane
   - Developer Experience
   - Internal Developer Platform
-  - Crossplane
-  - Cloud Infrastructure
 url: >-
   https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/apis.yml
 created: '2026-03-27'
@@ -23,9 +23,9 @@ apis:
       managed control planes and a marketplace for cloud infrastructure APIs.
     humanURL: https://www.upbound.io
     tags:
+      - Crossplane
       - Developer Experience
       - Internal Developer Platform
-      - Crossplane
     properties:
       - type: Documentation
         url: https://docs.upbound.io
