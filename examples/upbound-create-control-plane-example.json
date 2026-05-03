@@ -1,0 +1,34 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.upbound.io/v1/organizations/my-org/controlplanes",
+    "headers": {
+      "Authorization": "Bearer up-token-xxxx",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "dev-platform",
+      "description": "Developer sandbox control plane",
+      "configuration": "xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0",
+      "region": "us-west-2"
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "id": "ctp-ghi789",
+      "name": "dev-platform",
+      "description": "Developer sandbox control plane",
+      "organizationName": "my-org",
+      "configuration": "xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0",
+      "status": "provisioning",
+      "region": "us-west-2",
+      "crossplaneVersion": "v1.14.0",
+      "createdAt": "2026-05-03T12:00:00Z",
+      "updatedAt": "2026-05-03T12:00:00Z"
+    }
+  }
+}

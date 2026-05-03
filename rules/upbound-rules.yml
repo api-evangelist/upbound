@@ -1,0 +1,92 @@
+extends: spectral:oas
+rules:
+  upbound-operation-ids-camel-case:
+    description: Operation IDs must use camelCase
+    message: "Operation ID '{{value}}' must be camelCase"
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  upbound-path-kebab-case:
+    description: Path segments must use kebab-case (excluding path params)
+    message: "Path '{{path}}' should use kebab-case"
+    severity: warn
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(/[a-z0-9{}-]+)+$"
+
+  upbound-org-name-path-param:
+    description: Organization-scoped paths must include orgName path parameter
+    message: "Organization-scoped path must include {orgName} path parameter"
+    severity: warn
+    given: "$.paths[?(@property.match(/\\/organizations\\//))]"
+    then:
+      function: pattern
+      functionOptions:
+        match: ".*/\\{orgName\\}.*"
+
+  upbound-bearer-auth:
+    description: All operations must require bearer token authentication
+    message: "Operation should use BearerToken security scheme"
+    severity: warn
+    given: "$.paths[*][get,post,put,delete]"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          anyOf:
+            - required: [security]
+            - properties: {}
+
+  upbound-summaries-title-case:
+    description: Operation summaries must use Title Case
+    message: "Summary '{{value}}' must use Title Case"
+    severity: warn
+    given: "$.paths[*][*].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^([A-Z][a-z0-9]* ?)+$"
+
+  upbound-list-responses-items-array:
+    description: List operations should return an items array
+    message: "List response should contain an items array"
+    severity: warn
+    given: "$.paths[*].get.responses.200.content.application/json.schema"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          properties:
+            properties:
+              type: object
+              required: [items]
+
+  upbound-delete-returns-204:
+    description: DELETE operations must return 204 No Content
+    message: "DELETE operation should return 204"
+    severity: warn
+    given: "$.paths[*].delete.responses"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: ['204']
+
+  upbound-resource-naming-plural:
+    description: Collection path segments should be plural nouns
+    message: "Collection path segment should be plural"
+    severity: info
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        match: ".*s(/|$|\\{).*"

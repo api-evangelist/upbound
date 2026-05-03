@@ -1,0 +1,166 @@
+title: Upbound Vocabulary
+description: >-
+  Domain vocabulary for the Upbound universal cloud platform, covering
+  Crossplane control planes, platform engineering, and internal developer
+  platform concepts.
+version: '1.0'
+created: '2026-05-03'
+modified: '2026-05-03'
+tags:
+  - Crossplane
+  - Platform Engineering
+  - Cloud Infrastructure
+  - Internal Developer Platform
+
+terms:
+  - term: Control Plane
+    definition: >-
+      A managed Kubernetes-based environment running Crossplane that serves as
+      the authoritative source for cloud infrastructure APIs. Each control plane
+      exposes a Kubernetes API server that platform consumers interact with to
+      provision and manage cloud resources.
+    related:
+      - Crossplane
+      - Space
+      - Configuration
+
+  - term: Crossplane
+    definition: >-
+      An open source CNCF project that extends Kubernetes to allow platform
+      teams to assemble infrastructure from multiple clouds and services and
+      expose higher-level, self-service APIs for application developers to
+      consume.
+    related:
+      - Control Plane
+      - Provider
+      - Composition
+
+  - term: Space
+    definition: >-
+      An Upbound hosting environment for managed control planes, analogous to a
+      cloud region. Spaces host multiple control planes and provide isolation
+      boundaries for workloads.
+    related:
+      - Control Plane
+      - Organization
+
+  - term: Organization
+    definition: >-
+      A top-level account boundary on Upbound that groups teams, control planes,
+      repositories, and robot accounts. Organizations map to a business entity
+      or team using the Upbound platform.
+    related:
+      - Team
+      - Control Plane
+      - Repository
+
+  - term: Provider
+    definition: >-
+      A Crossplane package that enables management of external infrastructure
+      through the Kubernetes API (e.g., provider-aws, provider-gcp,
+      provider-azure). Providers define Managed Resources for each cloud service.
+    related:
+      - Crossplane
+      - Managed Resource
+      - Marketplace
+
+  - term: Composition
+    definition: >-
+      A Crossplane resource that defines how to compose multiple Managed
+      Resources into a higher-level Composite Resource (XR) that platform
+      consumers can provision with a simplified API.
+    related:
+      - Crossplane
+      - Composite Resource
+      - XRD
+
+  - term: Composite Resource (XR)
+    definition: >-
+      An infrastructure resource defined by a Composition that abstracts one
+      or more cloud provider Managed Resources behind a platform-specific API
+      surface.
+    synonyms:
+      - XR
+    related:
+      - Composition
+      - XRD
+
+  - term: XRD
+    definition: >-
+      CompositeResourceDefinition. A Crossplane CRD extension that defines
+      the schema and API for a Composite Resource, similar to a Kubernetes
+      CustomResourceDefinition.
+    synonyms:
+      - CompositeResourceDefinition
+    related:
+      - Composite Resource
+      - Composition
+
+  - term: Configuration
+    definition: >-
+      A Crossplane package (OCI image) containing Compositions, XRDs, and
+      Provider dependencies that define a complete platform API surface for
+      a control plane.
+    related:
+      - Control Plane
+      - Provider
+      - Composition
+
+  - term: Managed Resource
+    definition: >-
+      A Crossplane resource that represents a single external infrastructure
+      object (e.g., an RDS database, GCS bucket) and maps directly to a
+      cloud provider API.
+    related:
+      - Provider
+      - Composition
+
+  - term: Repository
+    definition: >-
+      An OCI registry in the Upbound Marketplace that stores versioned
+      Crossplane packages (Configurations and Providers).
+    related:
+      - Configuration
+      - Provider
+      - Marketplace
+
+  - term: Robot Account
+    definition: >-
+      A non-human account used for CI/CD pipeline access to Upbound APIs
+      and the Upbound Marketplace, with scoped permissions and rotating tokens.
+    synonyms:
+      - Robot
+    related:
+      - Organization
+      - CI/CD
+
+  - term: Marketplace
+    definition: >-
+      The Upbound public registry (marketplace.upbound.io) where platform
+      teams discover and publish Crossplane Configurations and Providers.
+    related:
+      - Repository
+      - Configuration
+      - Provider
+
+  - term: UXP
+    definition: >-
+      Universal Crossplane. Upbound's enterprise-grade distribution of
+      Crossplane with additional features, certifications, and support.
+    synonyms:
+      - Universal Crossplane
+    related:
+      - Crossplane
+      - Control Plane
+
+  - term: Internal Developer Platform
+    definition: >-
+      A self-service layer built on Crossplane and Upbound that allows
+      application developers to provision infrastructure without needing
+      direct access to cloud provider consoles or CLIs.
+    synonyms:
+      - IDP
+    related:
+      - Crossplane
+      - Control Plane
+      - Composition

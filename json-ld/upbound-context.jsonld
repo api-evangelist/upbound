@@ -1,0 +1,34 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "upbound": "https://api.upbound.io/v1/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Organization": "schema:Organization",
+    "id": { "@id": "schema:identifier", "@type": "xsd:string" },
+    "name": { "@id": "schema:name", "@type": "xsd:string" },
+    "displayName": { "@id": "schema:alternateName", "@type": "xsd:string" },
+    "description": { "@id": "schema:description", "@type": "xsd:string" },
+    "tier": { "@id": "upbound:tier", "@type": "xsd:string" },
+
+    "Team": "schema:Organization",
+    "organizationName": { "@id": "upbound:organizationName", "@type": "xsd:string" },
+    "memberCount": { "@id": "schema:numberOfEmployees", "@type": "xsd:integer" },
+
+    "ControlPlane": "schema:SoftwareApplication",
+    "configuration": { "@id": "upbound:configuration", "@type": "xsd:string" },
+    "status": { "@id": "upbound:status", "@type": "xsd:string" },
+    "region": { "@id": "upbound:region", "@type": "xsd:string" },
+    "crossplaneVersion": { "@id": "schema:softwareVersion", "@type": "xsd:string" },
+
+    "Repository": "schema:SoftwareSourceCode",
+    "public": { "@id": "schema:isAccessibleForFree", "@type": "xsd:boolean" },
+    "packageCount": { "@id": "upbound:packageCount", "@type": "xsd:integer" },
+
+    "Robot": "schema:Person",
+
+    "createdAt": { "@id": "schema:dateCreated", "@type": "xsd:dateTime" },
+    "updatedAt": { "@id": "schema:dateModified", "@type": "xsd:dateTime" }
+  }
+}

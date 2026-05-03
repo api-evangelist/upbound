@@ -1,0 +1,987 @@
+openapi: 3.0.3
+info:
+  title: Upbound API
+  description: >-
+    Upbound is a universal cloud platform built on Crossplane, providing managed
+    control planes and a marketplace for cloud infrastructure APIs. The Upbound
+    API enables programmatic management of organizations, spaces, control planes,
+    groups, repositories, robot accounts, and IAM resources through a REST
+    interface.
+  version: 'v1'
+  contact:
+    name: Upbound Support
+    url: https://docs.upbound.io
+  termsOfService: https://www.upbound.io/terms
+servers:
+  - url: https://api.upbound.io/v1
+    description: Upbound Cloud API
+
+tags:
+  - name: Organizations
+    description: Organization management
+  - name: Teams
+    description: Team and membership management
+  - name: Control Planes
+    description: Managed control plane lifecycle
+  - name: Spaces
+    description: Space environment management
+  - name: Repositories
+    description: Package registry and repository management
+  - name: Robots
+    description: Robot account and token management
+  - name: Authentication
+    description: Token and authentication management
+
+paths:
+  /organizations:
+    get:
+      operationId: listOrganizations
+      summary: List Organizations
+      description: List all organizations the authenticated user belongs to.
+      tags:
+        - Organizations
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: List of organizations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: createOrganization
+      summary: Create Organization
+      description: Create a new organization.
+      tags:
+        - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationRequest'
+      responses:
+        '201':
+          description: Organization created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /organizations/{orgName}:
+    get:
+      operationId: getOrganization
+      summary: Get Organization
+      description: Retrieve details of a specific organization.
+      tags:
+        - Organizations
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Organization name
+      responses:
+        '200':
+          description: Organization details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      operationId: updateOrganization
+      summary: Update Organization
+      description: Update organization settings.
+      tags:
+        - Organizations
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationRequest'
+      responses:
+        '200':
+          description: Organization updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      operationId: deleteOrganization
+      summary: Delete Organization
+      description: Delete an organization and all its resources.
+      tags:
+        - Organizations
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Organization deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /organizations/{orgName}/teams:
+    get:
+      operationId: listTeams
+      summary: List Teams
+      description: List all teams in an organization.
+      tags:
+        - Teams
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: List of teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: createTeam
+      summary: Create Team
+      description: Create a new team in an organization.
+      tags:
+        - Teams
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRequest'
+      responses:
+        '201':
+          description: Team created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /organizations/{orgName}/teams/{teamName}:
+    get:
+      operationId: getTeam
+      summary: Get Team
+      description: Retrieve details of a specific team.
+      tags:
+        - Teams
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: teamName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Team details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      operationId: deleteTeam
+      summary: Delete Team
+      description: Delete a team from an organization.
+      tags:
+        - Teams
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: teamName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Team deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /organizations/{orgName}/controlplanes:
+    get:
+      operationId: listControlPlanes
+      summary: List Control Planes
+      description: List all managed control planes in an organization.
+      tags:
+        - Control Planes
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: List of control planes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPlaneList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: createControlPlane
+      summary: Create Control Plane
+      description: Create a new managed control plane.
+      tags:
+        - Control Planes
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlPlaneRequest'
+      responses:
+        '201':
+          description: Control plane created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPlane'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /organizations/{orgName}/controlplanes/{cpName}:
+    get:
+      operationId: getControlPlane
+      summary: Get Control Plane
+      description: Retrieve details and status of a specific control plane.
+      tags:
+        - Control Planes
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: cpName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Control plane name
+      responses:
+        '200':
+          description: Control plane details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPlane'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      operationId: updateControlPlane
+      summary: Update Control Plane
+      description: Update a control plane configuration.
+      tags:
+        - Control Planes
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: cpName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlPlaneRequest'
+      responses:
+        '200':
+          description: Control plane updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPlane'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      operationId: deleteControlPlane
+      summary: Delete Control Plane
+      description: Delete a managed control plane.
+      tags:
+        - Control Planes
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: cpName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Control plane deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /organizations/{orgName}/repositories:
+    get:
+      operationId: listRepositories
+      summary: List Repositories
+      description: List all package repositories in an organization.
+      tags:
+        - Repositories
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: List of repositories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositoryList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: createRepository
+      summary: Create Repository
+      description: Create a new package repository.
+      tags:
+        - Repositories
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepositoryRequest'
+      responses:
+        '201':
+          description: Repository created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Repository'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /organizations/{orgName}/repositories/{repoName}:
+    get:
+      operationId: getRepository
+      summary: Get Repository
+      description: Retrieve details of a specific package repository.
+      tags:
+        - Repositories
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: repoName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Repository details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Repository'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      operationId: deleteRepository
+      summary: Delete Repository
+      description: Delete a package repository.
+      tags:
+        - Repositories
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: repoName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Repository deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /organizations/{orgName}/robots:
+    get:
+      operationId: listRobots
+      summary: List Robots
+      description: List all robot accounts in an organization.
+      tags:
+        - Robots
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of robot accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      operationId: createRobot
+      summary: Create Robot
+      description: Create a new robot account for CI/CD automation.
+      tags:
+        - Robots
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotRequest'
+      responses:
+        '201':
+          description: Robot account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Robot'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /organizations/{orgName}/robots/{robotName}:
+    get:
+      operationId: getRobot
+      summary: Get Robot
+      description: Retrieve details of a specific robot account.
+      tags:
+        - Robots
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: robotName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Robot account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Robot'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      operationId: deleteRobot
+      summary: Delete Robot
+      description: Delete a robot account.
+      tags:
+        - Robots
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: robotName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Robot account deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /organizations/{orgName}/robots/{robotName}/tokens:
+    post:
+      operationId: createRobotToken
+      summary: Create Robot Token
+      description: Create a new API token for a robot account.
+      tags:
+        - Robots
+      parameters:
+        - name: orgName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: robotName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Token name
+      responses:
+        '201':
+          description: Robot token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotToken'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: Upbound personal access token or robot token
+
+  responses:
+    Unauthorized:
+      description: Authentication token missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Organization unique identifier
+        name:
+          type: string
+          description: Organization slug name
+        displayName:
+          type: string
+          description: Human-readable display name
+        description:
+          type: string
+        tier:
+          type: string
+          enum: [free, team, enterprise]
+          description: Subscription tier
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    OrganizationList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organization'
+        count:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer
+
+    OrganizationRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Organization slug name
+        displayName:
+          type: string
+        description:
+          type: string
+
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        organizationName:
+          type: string
+        description:
+          type: string
+        memberCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+
+    TeamList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+        count:
+          type: integer
+
+    TeamRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    ControlPlane:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        organizationName:
+          type: string
+        configuration:
+          type: string
+          description: Crossplane configuration package reference
+        status:
+          type: string
+          enum: [provisioning, ready, updating, deleting, error]
+        region:
+          type: string
+          description: Hosting region
+        crossplaneVersion:
+          type: string
+        kubeconfig:
+          type: string
+          description: Base64-encoded kubeconfig for direct access
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ControlPlaneList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ControlPlane'
+        count:
+          type: integer
+
+    ControlPlaneRequest:
+      type: object
+      required:
+        - name
+        - configuration
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        configuration:
+          type: string
+          description: Crossplane configuration package (e.g., xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)
+        region:
+          type: string
+
+    Repository:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        organizationName:
+          type: string
+        public:
+          type: boolean
+          description: Whether the repository is publicly accessible
+        description:
+          type: string
+        packageCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    RepositoryList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Repository'
+        count:
+          type: integer
+
+    RepositoryRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+          default: false
+
+    Robot:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        organizationName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    RobotList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Robot'
+        count:
+          type: integer
+
+    RobotRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    RobotToken:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        token:
+          type: string
+          description: Secret token value (only returned on creation)
+        createdAt:
+          type: string
+          format: date-time
+
+security:
+  - BearerToken: []

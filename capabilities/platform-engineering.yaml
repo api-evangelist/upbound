@@ -1,0 +1,332 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Upbound Platform Engineering"
+  description: >-
+    Workflow capability for Upbound platform engineering, composing organization
+    management, control plane lifecycle, package repositories, team access, and
+    robot account automation into a unified internal developer platform workflow.
+    Designed for platform engineers and DevOps teams managing cloud infrastructure
+    through Crossplane-based control planes.
+  tags:
+    - Upbound
+    - Crossplane
+    - Platform Engineering
+    - Internal Developer Platform
+    - Cloud Infrastructure
+    - Control Planes
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      UPBOUND_TOKEN: UPBOUND_TOKEN
+
+capability:
+  consumes:
+    - import: upbound
+      location: ./shared/upbound.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: upbound-platform-api
+      description: "Unified REST API for Upbound platform engineering workflows."
+      resources:
+        - path: /v1/organizations
+          name: organizations
+          description: "Organization management"
+          operations:
+            - method: GET
+              name: list-organizations
+              description: "List all organizations"
+              call: "upbound.list-organizations"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-organization
+              description: "Create a new organization"
+              call: "upbound.create-organization"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/organizations/{orgName}
+          name: organization
+          description: "Individual organization"
+          operations:
+            - method: GET
+              name: get-organization
+              description: "Get organization details"
+              call: "upbound.get-organization"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: DELETE
+              name: delete-organization
+              description: "Delete an organization"
+              call: "upbound.delete-organization"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/organizations/{orgName}/control-planes
+          name: control-planes
+          description: "Managed control plane lifecycle"
+          operations:
+            - method: GET
+              name: list-control-planes
+              description: "List control planes in organization"
+              call: "upbound.list-control-planes"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-control-plane
+              description: "Create a new managed control plane"
+              call: "upbound.create-control-plane"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/organizations/{orgName}/control-planes/{cpName}
+          name: control-plane
+          description: "Individual control plane operations"
+          operations:
+            - method: GET
+              name: get-control-plane
+              description: "Get control plane status and details"
+              call: "upbound.get-control-plane"
+              with:
+                orgName: "rest.orgName"
+                cpName: "rest.cpName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: DELETE
+              name: delete-control-plane
+              description: "Delete a managed control plane"
+              call: "upbound.delete-control-plane"
+              with:
+                orgName: "rest.orgName"
+                cpName: "rest.cpName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/organizations/{orgName}/repositories
+          name: repositories
+          description: "Package repository management"
+          operations:
+            - method: GET
+              name: list-repositories
+              description: "List package repositories"
+              call: "upbound.list-repositories"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-repository
+              description: "Create a package repository"
+              call: "upbound.create-repository"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/organizations/{orgName}/teams
+          name: teams
+          description: "Team management"
+          operations:
+            - method: GET
+              name: list-teams
+              description: "List teams in organization"
+              call: "upbound.list-teams"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-team
+              description: "Create a new team"
+              call: "upbound.create-team"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/organizations/{orgName}/robots
+          name: robots
+          description: "Robot account management for CI/CD automation"
+          operations:
+            - method: GET
+              name: list-robots
+              description: "List robot accounts"
+              call: "upbound.list-robots"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-robot
+              description: "Create a robot account"
+              call: "upbound.create-robot"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: upbound-platform-mcp
+      transport: http
+      description: "MCP server for AI-assisted Upbound platform engineering workflows."
+      tools:
+        - name: list-organizations
+          description: "List all Upbound organizations the user belongs to"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-organizations"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-organization
+          description: "Get details for a specific Upbound organization"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.get-organization"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-organization
+          description: "Create a new Upbound organization"
+          hints:
+            readOnly: false
+            openWorld: false
+          call: "upbound.create-organization"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-control-planes
+          description: "List managed Crossplane control planes in an organization"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-control-planes"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-control-plane
+          description: "Get status and configuration of a managed control plane"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.get-control-plane"
+          with:
+            orgName: "tools.orgName"
+            cpName: "tools.cpName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-control-plane
+          description: "Provision a new managed Crossplane control plane"
+          hints:
+            readOnly: false
+            openWorld: false
+          call: "upbound.create-control-plane"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: delete-control-plane
+          description: "Deprovision and delete a managed control plane"
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "upbound.delete-control-plane"
+          with:
+            orgName: "tools.orgName"
+            cpName: "tools.cpName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-repositories
+          description: "List Crossplane package repositories in an organization"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-repositories"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-repository
+          description: "Create a new Crossplane package repository"
+          hints:
+            readOnly: false
+            openWorld: false
+          call: "upbound.create-repository"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-teams
+          description: "List teams in an Upbound organization"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-teams"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-robots
+          description: "List robot accounts for CI/CD automation"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-robots"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-robot
+          description: "Create a robot account for CI/CD pipeline access"
+          hints:
+            readOnly: false
+            openWorld: false
+          call: "upbound.create-robot"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."

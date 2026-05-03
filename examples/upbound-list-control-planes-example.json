@@ -1,0 +1,47 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://api.upbound.io/v1/organizations/my-org/controlplanes?page=1&size=10",
+    "headers": {
+      "Authorization": "Bearer up-token-xxxx",
+      "Accept": "application/json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "items": [
+        {
+          "id": "ctp-abc123",
+          "name": "production",
+          "description": "Production platform control plane",
+          "organizationName": "my-org",
+          "configuration": "xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0",
+          "status": "ready",
+          "region": "us-west-2",
+          "crossplaneVersion": "v1.14.0",
+          "createdAt": "2026-01-15T10:00:00Z",
+          "updatedAt": "2026-05-01T08:30:00Z"
+        },
+        {
+          "id": "ctp-def456",
+          "name": "staging",
+          "description": "Staging environment control plane",
+          "organizationName": "my-org",
+          "configuration": "xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0",
+          "status": "ready",
+          "region": "us-east-1",
+          "crossplaneVersion": "v1.14.0",
+          "createdAt": "2026-02-01T09:00:00Z",
+          "updatedAt": "2026-04-28T14:00:00Z"
+        }
+      ],
+      "count": 2,
+      "page": 1,
+      "size": 10
+    }
+  }
+}

@@ -1,0 +1,359 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Upbound API"
+  description: >-
+    Upbound API shared capability definition for managing organizations, teams,
+    managed control planes, package repositories, and robot accounts on the
+    Upbound universal cloud platform built on Crossplane.
+  tags:
+    - Upbound
+    - Crossplane
+    - Cloud Infrastructure
+    - Internal Developer Platform
+    - Control Planes
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      UPBOUND_TOKEN: UPBOUND_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: upbound
+      baseUri: https://api.upbound.io/v1
+      description: "Upbound Cloud REST API"
+      authentication:
+        type: bearer
+        token: "{{UPBOUND_TOKEN}}"
+      resources:
+        - name: organizations
+          path: /organizations
+          description: "Organization management"
+          operations:
+            - name: list-organizations
+              method: GET
+              description: "List all organizations the authenticated user belongs to"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-organization
+              method: POST
+              description: "Create a new organization"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  displayName: "{{tools.displayName}}"
+                  description: "{{tools.description}}"
+
+        - name: organization
+          path: /organizations/{orgName}
+          description: "Individual organization operations"
+          operations:
+            - name: get-organization
+              method: GET
+              description: "Get organization details"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: delete-organization
+              method: DELETE
+              description: "Delete an organization"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: control-planes
+          path: /organizations/{orgName}/controlplanes
+          description: "Managed control plane management"
+          operations:
+            - name: list-control-planes
+              method: GET
+              description: "List managed control planes in an organization"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+                - name: page
+                  in: query
+                  type: integer
+                  required: false
+                - name: size
+                  in: query
+                  type: integer
+                  required: false
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-control-plane
+              method: POST
+              description: "Create a new managed control plane"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  configuration: "{{tools.configuration}}"
+                  region: "{{tools.region}}"
+                  description: "{{tools.description}}"
+
+        - name: control-plane
+          path: /organizations/{orgName}/controlplanes/{cpName}
+          description: "Individual control plane operations"
+          operations:
+            - name: get-control-plane
+              method: GET
+              description: "Get control plane details and status"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+                - name: cpName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: delete-control-plane
+              method: DELETE
+              description: "Delete a managed control plane"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+                - name: cpName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: repositories
+          path: /organizations/{orgName}/repositories
+          description: "Package repository management"
+          operations:
+            - name: list-repositories
+              method: GET
+              description: "List package repositories in an organization"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-repository
+              method: POST
+              description: "Create a new package repository"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  description: "{{tools.description}}"
+                  public: "{{tools.public}}"
+
+        - name: robots
+          path: /organizations/{orgName}/robots
+          description: "Robot account management"
+          operations:
+            - name: list-robots
+              method: GET
+              description: "List robot accounts in an organization"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-robot
+              method: POST
+              description: "Create a robot account for CI/CD"
+              inputParameters:
+                - name: orgName
+                  in: path
+                  type: string
+                  required: true
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  description: "{{tools.description}}"
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: upbound-api
+      resources:
+        - path: /v1/organizations
+          name: organizations
+          operations:
+            - method: GET
+              name: list-organizations
+              description: "List organizations"
+              call: "upbound.list-organizations"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/organizations/{orgName}/controlplanes
+          name: control-planes
+          operations:
+            - method: GET
+              name: list-control-planes
+              description: "List control planes"
+              call: "upbound.list-control-planes"
+              with:
+                orgName: "rest.orgName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: upbound-mcp
+      transport: http
+      tools:
+        - name: list-organizations
+          description: "List all organizations the user belongs to"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-organizations"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-control-planes
+          description: "List managed control planes in an organization"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-control-planes"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-control-plane
+          description: "Get details and status of a specific control plane"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.get-control-plane"
+          with:
+            orgName: "tools.orgName"
+            cpName: "tools.cpName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-control-plane
+          description: "Create a new managed Crossplane control plane"
+          hints:
+            readOnly: false
+            openWorld: false
+          call: "upbound.create-control-plane"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: delete-control-plane
+          description: "Delete a managed control plane"
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "upbound.delete-control-plane"
+          with:
+            orgName: "tools.orgName"
+            cpName: "tools.cpName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-repositories
+          description: "List package repositories in an organization"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-repositories"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-robots
+          description: "List robot accounts in an organization"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "upbound.list-robots"
+          with:
+            orgName: "tools.orgName"
+          outputParameters:
+            - type: object
+              mapping: "$."

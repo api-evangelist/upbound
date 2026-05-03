@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/upbound/main/json-schema/upbound-control-plane-schema.json",
+  "title": "Upbound Control Plane",
+  "description": "A managed Crossplane control plane on the Upbound platform",
+  "type": "object",
+  "required": ["id", "name", "organizationName", "configuration", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique control plane identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Control plane name (slug)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description"
+    },
+    "organizationName": {
+      "type": "string",
+      "description": "Parent organization name"
+    },
+    "configuration": {
+      "type": "string",
+      "description": "Crossplane configuration package reference (e.g. xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["provisioning", "ready", "updating", "deleting", "error"],
+      "description": "Current control plane status"
+    },
+    "region": {
+      "type": "string",
+      "description": "Hosting region"
+    },
+    "crossplaneVersion": {
+      "type": "string",
+      "description": "Crossplane version running on this control plane"
+    },
+    "kubeconfig": {
+      "type": "string",
+      "description": "Base64-encoded kubeconfig for direct API access"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
