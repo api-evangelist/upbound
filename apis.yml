@@ -36,7 +36,7 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.upbound.io
-      - type: Getting Started
+      - type: GettingStarted
         url: https://docs.upbound.io/quickstart
       - type: OpenAPI
         url: https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/openapi/upbound-openapi.yml
@@ -45,7 +45,7 @@ common:
     url: https://www.upbound.io
   - type: Documentation
     url: https://docs.upbound.io
-  - type: GitHub Organization
+  - type: GitHubOrganization
     url: https://github.com/upbound
   - type: Marketplace
     url: https://marketplace.upbound.io
