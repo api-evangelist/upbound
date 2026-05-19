@@ -16,7 +16,7 @@ tags:
 url: >-
   https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/apis.yml
 created: '2026-03-27'
-modified: '2026-05-03'
+modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
   - aid: upbound:upbound
@@ -49,6 +49,9 @@ common:
     url: https://github.com/upbound
   - type: Marketplace
     url: https://marketplace.upbound.io
+  - name: MCP Server
+    url: https://github.com/upbound/marketplace-mcp-server
+    type: MCPServer
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
