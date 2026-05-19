@@ -1,0 +1,261 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Upbound API — Robots
+  description: 'Upbound API — Robots. 5 operations. Lead operation: List Robots. Self-contained Naftiko capability covering
+    one Upbound business surface.'
+  tags:
+  - Upbound
+  - Robots
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    UPBOUND_API_KEY: UPBOUND_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: upbound-robots
+    baseUri: https://api.upbound.io/v1
+    description: Upbound API — Robots business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-orgName-robots
+      path: /organizations/{orgName}/robots
+      operations:
+      - name: listrobots
+        method: GET
+        description: List Robots
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+      - name: createrobot
+        method: POST
+        description: Create Robot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: organizations-orgName-robots-robotName
+      path: /organizations/{orgName}/robots/{robotName}
+      operations:
+      - name: getrobot
+        method: GET
+        description: Get Robot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+        - name: robotName
+          in: path
+          type: string
+          required: true
+      - name: deleterobot
+        method: DELETE
+        description: Delete Robot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+        - name: robotName
+          in: path
+          type: string
+          required: true
+    - name: organizations-orgName-robots-robotName-tokens
+      path: /organizations/{orgName}/robots/{robotName}/tokens
+      operations:
+      - name: createrobottoken
+        method: POST
+        description: Create Robot Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+        - name: robotName
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.UPBOUND_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: upbound-robots-rest
+    port: 8080
+    description: REST adapter for Upbound API — Robots. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/organizations/{orgname}/robots
+      name: organizations-orgname-robots
+      description: REST surface for organizations-orgName-robots.
+      operations:
+      - method: GET
+        name: listrobots
+        description: List Robots
+        call: upbound-robots.listrobots
+        with:
+          orgName: rest.orgName
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createrobot
+        description: Create Robot
+        call: upbound-robots.createrobot
+        with:
+          orgName: rest.orgName
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organizations/{orgname}/robots/{robotname}
+      name: organizations-orgname-robots-robotname
+      description: REST surface for organizations-orgName-robots-robotName.
+      operations:
+      - method: GET
+        name: getrobot
+        description: Get Robot
+        call: upbound-robots.getrobot
+        with:
+          orgName: rest.orgName
+          robotName: rest.robotName
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleterobot
+        description: Delete Robot
+        call: upbound-robots.deleterobot
+        with:
+          orgName: rest.orgName
+          robotName: rest.robotName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organizations/{orgname}/robots/{robotname}/tokens
+      name: organizations-orgname-robots-robotname-tokens
+      description: REST surface for organizations-orgName-robots-robotName-tokens.
+      operations:
+      - method: POST
+        name: createrobottoken
+        description: Create Robot Token
+        call: upbound-robots.createrobottoken
+        with:
+          orgName: rest.orgName
+          robotName: rest.robotName
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: upbound-robots-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Upbound API — Robots. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: list-robots
+      description: List Robots
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: upbound-robots.listrobots
+      with:
+        orgName: tools.orgName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-robot
+      description: Create Robot
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: upbound-robots.createrobot
+      with:
+        orgName: tools.orgName
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-robot
+      description: Get Robot
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: upbound-robots.getrobot
+      with:
+        orgName: tools.orgName
+        robotName: tools.robotName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-robot
+      description: Delete Robot
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: upbound-robots.deleterobot
+      with:
+        orgName: tools.orgName
+        robotName: tools.robotName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-robot-token
+      description: Create Robot Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: upbound-robots.createrobottoken
+      with:
+        orgName: tools.orgName
+        robotName: tools.robotName
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

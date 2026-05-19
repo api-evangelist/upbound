@@ -1,0 +1,217 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Upbound API — Repositories
+  description: 'Upbound API — Repositories. 4 operations. Lead operation: List Repositories. Self-contained Naftiko capability
+    covering one Upbound business surface.'
+  tags:
+  - Upbound
+  - Repositories
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    UPBOUND_API_KEY: UPBOUND_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: upbound-repositories
+    baseUri: https://api.upbound.io/v1
+    description: Upbound API — Repositories business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-orgName-repositories
+      path: /organizations/{orgName}/repositories
+      operations:
+      - name: listrepositories
+        method: GET
+        description: List Repositories
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+        - name: page
+          in: query
+          type: integer
+        - name: size
+          in: query
+          type: integer
+      - name: createrepository
+        method: POST
+        description: Create Repository
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: organizations-orgName-repositories-repoName
+      path: /organizations/{orgName}/repositories/{repoName}
+      operations:
+      - name: getrepository
+        method: GET
+        description: Get Repository
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+        - name: repoName
+          in: path
+          type: string
+          required: true
+      - name: deleterepository
+        method: DELETE
+        description: Delete Repository
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: orgName
+          in: path
+          type: string
+          required: true
+        - name: repoName
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.UPBOUND_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: upbound-repositories-rest
+    port: 8080
+    description: REST adapter for Upbound API — Repositories. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/organizations/{orgname}/repositories
+      name: organizations-orgname-repositories
+      description: REST surface for organizations-orgName-repositories.
+      operations:
+      - method: GET
+        name: listrepositories
+        description: List Repositories
+        call: upbound-repositories.listrepositories
+        with:
+          orgName: rest.orgName
+          page: rest.page
+          size: rest.size
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createrepository
+        description: Create Repository
+        call: upbound-repositories.createrepository
+        with:
+          orgName: rest.orgName
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organizations/{orgname}/repositories/{reponame}
+      name: organizations-orgname-repositories-reponame
+      description: REST surface for organizations-orgName-repositories-repoName.
+      operations:
+      - method: GET
+        name: getrepository
+        description: Get Repository
+        call: upbound-repositories.getrepository
+        with:
+          orgName: rest.orgName
+          repoName: rest.repoName
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleterepository
+        description: Delete Repository
+        call: upbound-repositories.deleterepository
+        with:
+          orgName: rest.orgName
+          repoName: rest.repoName
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: upbound-repositories-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Upbound API — Repositories. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: list-repositories
+      description: List Repositories
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: upbound-repositories.listrepositories
+      with:
+        orgName: tools.orgName
+        page: tools.page
+        size: tools.size
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-repository
+      description: Create Repository
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: upbound-repositories.createrepository
+      with:
+        orgName: tools.orgName
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-repository
+      description: Get Repository
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: upbound-repositories.getrepository
+      with:
+        orgName: tools.orgName
+        repoName: tools.repoName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-repository
+      description: Delete Repository
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: upbound-repositories.deleterepository
+      with:
+        orgName: tools.orgName
+        repoName: tools.repoName
+      outputParameters:
+      - type: object
+        mapping: $.
