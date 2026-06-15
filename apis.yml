@@ -1,7 +1,8 @@
 aid: upbound
 name: Upbound
-description: Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace
-  for cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes,
+description: >-
+  Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace for
+  cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes,
   package repositories, teams, and robot accounts.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
@@ -18,33 +19,24 @@ specificationVersion: '0.19'
 apis:
   - aid: upbound:upbound
     name: Upbound API
-    description: The Upbound API provides programmatic management of the Upbound universal cloud platform, including organizations,
+    description: >-
+      The Upbound API provides programmatic management of the Upbound universal cloud platform, including organizations,
       teams, managed Crossplane control planes, package repositories, and robot accounts for CI/CD automation.
     humanURL: https://www.upbound.io
     baseURL: https://api.upbound.io/v1
     tags:
-    - Crossplane
-    - Developer Experience
-    - Internal Developer Platform
-    - Control Planes
-    - Organizations
+      - Crossplane
+      - Developer Experience
+      - Internal Developer Platform
+      - Control Planes
+      - Organizations
     properties:
-    - type: Documentation
-      url: https://docs.upbound.io
-    - type: GettingStarted
-      url: https://docs.upbound.io/quickstart
-    - type: OpenAPI
-      url: https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/openapi/upbound-openapi.yml
-    - type: NaftikoCapability
-      url: capabilities/upbound-control-planes.yaml
-    - type: NaftikoCapability
-      url: capabilities/upbound-organizations.yaml
-    - type: NaftikoCapability
-      url: capabilities/upbound-repositories.yaml
-    - type: NaftikoCapability
-      url: capabilities/upbound-robots.yaml
-    - type: NaftikoCapability
-      url: capabilities/upbound-teams.yaml
+      - type: Documentation
+        url: https://docs.upbound.io
+      - type: GettingStarted
+        url: https://docs.upbound.io/quickstart
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/openapi/upbound-openapi.yml
 common:
   - type: LinkedIn
     url: https://www.linkedin.com/company/upbound-io

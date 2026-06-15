@@ -1,0 +1,582 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Upbound API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Organizations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all organizations the authenticated user belongs to."
+        },
+        {
+          "info": {
+            "name": "Create Organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.upbound.io/v1/organizations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new organization."
+        },
+        {
+          "info": {
+            "name": "Get Organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path",
+                "description": "Organization name"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific organization."
+        },
+        {
+          "info": {
+            "name": "Update Organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.upbound.io/v1/organizations/:orgName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update organization settings."
+        },
+        {
+          "info": {
+            "name": "Delete Organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.upbound.io/v1/organizations/:orgName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an organization and all its resources."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Teams",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/teams",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all teams in an organization."
+        },
+        {
+          "info": {
+            "name": "Create Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/teams",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new team in an organization."
+        },
+        {
+          "info": {
+            "name": "Get Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/teams/:teamName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "teamName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific team."
+        },
+        {
+          "info": {
+            "name": "Delete Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/teams/:teamName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "teamName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a team from an organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Control Planes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Control Planes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/controlplanes",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all managed control planes in an organization."
+        },
+        {
+          "info": {
+            "name": "Create Control Plane",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/controlplanes",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new managed control plane."
+        },
+        {
+          "info": {
+            "name": "Get Control Plane",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/controlplanes/:cpName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cpName",
+                "value": "",
+                "type": "path",
+                "description": "Control plane name"
+              }
+            ]
+          },
+          "docs": "Retrieve details and status of a specific control plane."
+        },
+        {
+          "info": {
+            "name": "Update Control Plane",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/controlplanes/:cpName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cpName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a control plane configuration."
+        },
+        {
+          "info": {
+            "name": "Delete Control Plane",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/controlplanes/:cpName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cpName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a managed control plane."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Repositories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Repositories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/repositories",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all package repositories in an organization."
+        },
+        {
+          "info": {
+            "name": "Create Repository",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/repositories",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new package repository."
+        },
+        {
+          "info": {
+            "name": "Get Repository",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/repositories/:repoName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "repoName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific package repository."
+        },
+        {
+          "info": {
+            "name": "Delete Repository",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/repositories/:repoName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "repoName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a package repository."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Robots",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Robots",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/robots",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List all robot accounts in an organization."
+        },
+        {
+          "info": {
+            "name": "Create Robot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/robots",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new robot account for CI/CD automation."
+        },
+        {
+          "info": {
+            "name": "Get Robot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/robots/:robotName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "robotName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific robot account."
+        },
+        {
+          "info": {
+            "name": "Delete Robot",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/robots/:robotName",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "robotName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a robot account."
+        },
+        {
+          "info": {
+            "name": "Create Robot Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.upbound.io/v1/organizations/:orgName/robots/:robotName/tokens",
+            "params": [
+              {
+                "name": "orgName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "robotName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new API token for a robot account."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
