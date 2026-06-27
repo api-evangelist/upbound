@@ -51,7 +51,7 @@ common:
   - name: MCP Server
     url: https://github.com/upbound/marketplace-mcp-server
     type: MCPServer
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.upbound.io/llms.txt
 maintainers:
   - FN: Kin Lane
