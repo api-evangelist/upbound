@@ -38,6 +38,14 @@ apis:
       - type: OpenAPI
         url: https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/openapi/upbound-openapi.yml
 common:
+  - type: TrustCenter
+    url: security/upbound-trust-center.yml
+  - type: DomainSecurity
+    url: security/upbound-domain-security.yml
+  - type: Authentication
+    url: authentication/upbound-authentication.yml
+  - url: https://www.upbound.io/blog
+    type: Blog
   - type: LinkedIn
     url: https://www.linkedin.com/company/upbound-io
   - type: Website

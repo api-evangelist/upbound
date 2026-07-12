@@ -1,0 +1,13 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/upbound-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: BearerToken
+  type: http
+  scheme: bearer
+  description: Upbound personal access token or robot token
+  sources:
+  - openapi/upbound-openapi.yml
