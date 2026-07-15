@@ -38,6 +38,8 @@ apis:
       - type: OpenAPI
         url: https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/openapi/upbound-openapi.yml
 common:
+  - type: AgenticAccess
+    url: agentic-access/upbound-agentic-access.yml
   - type: TrustCenter
     url: security/upbound-trust-center.yml
   - type: DomainSecurity
