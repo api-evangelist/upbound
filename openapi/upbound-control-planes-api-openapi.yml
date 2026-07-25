@@ -1,0 +1,264 @@
+openapi: 3.0.3
+info:
+  title: Upbound Control Planes API
+  description: Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace for cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes, groups, repositories, robot accounts, and IAM resources through a REST interface.
+  version: v1
+  contact:
+    name: Upbound Support
+    url: https://docs.upbound.io
+  termsOfService: https://www.upbound.io/terms
+servers:
+- url: https://api.upbound.io/v1
+  description: Upbound Cloud API
+security:
+- BearerToken: []
+tags:
+- name: Control Planes
+  description: Managed control plane lifecycle
+paths:
+  /organizations/{orgName}/controlplanes:
+    get:
+      operationId: listControlPlanes
+      summary: List Control Planes
+      description: List all managed control planes in an organization.
+      tags:
+      - Control Planes
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        '200':
+          description: List of control planes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPlaneList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createControlPlane
+      summary: Create Control Plane
+      description: Create a new managed control plane.
+      tags:
+      - Control Planes
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlPlaneRequest'
+      responses:
+        '201':
+          description: Control plane created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPlane'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{orgName}/controlplanes/{cpName}:
+    get:
+      operationId: getControlPlane
+      summary: Get Control Plane
+      description: Retrieve details and status of a specific control plane.
+      tags:
+      - Control Planes
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: cpName
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Control plane name
+      responses:
+        '200':
+          description: Control plane details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPlane'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateControlPlane
+      summary: Update Control Plane
+      description: Update a control plane configuration.
+      tags:
+      - Control Planes
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: cpName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlPlaneRequest'
+      responses:
+        '200':
+          description: Control plane updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPlane'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteControlPlane
+      summary: Delete Control Plane
+      description: Delete a managed control plane.
+      tags:
+      - Control Planes
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: cpName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Control plane deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    ControlPlaneRequest:
+      type: object
+      required:
+      - name
+      - configuration
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        configuration:
+          type: string
+          description: Crossplane configuration package (e.g., xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)
+        region:
+          type: string
+    ControlPlane:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        organizationName:
+          type: string
+        configuration:
+          type: string
+          description: Crossplane configuration package reference
+        status:
+          type: string
+          enum:
+          - provisioning
+          - ready
+          - updating
+          - deleting
+          - error
+        region:
+          type: string
+          description: Hosting region
+        crossplaneVersion:
+          type: string
+        kubeconfig:
+          type: string
+          description: Base64-encoded kubeconfig for direct access
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ControlPlaneList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ControlPlane'
+        count:
+          type: integer
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication token missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: Upbound personal access token or robot token

@@ -1,0 +1,230 @@
+openapi: 3.0.3
+info:
+  title: Upbound Control Planes Organizations API
+  description: Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace for cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes, groups, repositories, robot accounts, and IAM resources through a REST interface.
+  version: v1
+  contact:
+    name: Upbound Support
+    url: https://docs.upbound.io
+  termsOfService: https://www.upbound.io/terms
+servers:
+- url: https://api.upbound.io/v1
+  description: Upbound Cloud API
+security:
+- BearerToken: []
+tags:
+- name: Organizations
+  description: Organization management
+paths:
+  /organizations:
+    get:
+      operationId: listOrganizations
+      summary: List Organizations
+      description: List all organizations the authenticated user belongs to.
+      tags:
+      - Organizations
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        '200':
+          description: List of organizations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createOrganization
+      summary: Create Organization
+      description: Create a new organization.
+      tags:
+      - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationRequest'
+      responses:
+        '201':
+          description: Organization created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{orgName}:
+    get:
+      operationId: getOrganization
+      summary: Get Organization
+      description: Retrieve details of a specific organization.
+      tags:
+      - Organizations
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Organization name
+      responses:
+        '200':
+          description: Organization details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateOrganization
+      summary: Update Organization
+      description: Update organization settings.
+      tags:
+      - Organizations
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationRequest'
+      responses:
+        '200':
+          description: Organization updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteOrganization
+      summary: Delete Organization
+      description: Delete an organization and all its resources.
+      tags:
+      - Organizations
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Organization deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    OrganizationRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Organization slug name
+        displayName:
+          type: string
+        description:
+          type: string
+    OrganizationList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organization'
+        count:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Organization unique identifier
+        name:
+          type: string
+          description: Organization slug name
+        displayName:
+          type: string
+          description: Human-readable display name
+        description:
+          type: string
+        tier:
+          type: string
+          enum:
+          - free
+          - team
+          - enterprise
+          description: Subscription tier
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Authentication token missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: Upbound personal access token or robot token

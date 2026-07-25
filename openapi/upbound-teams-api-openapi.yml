@@ -1,0 +1,201 @@
+openapi: 3.0.3
+info:
+  title: Upbound Control Planes Teams API
+  description: Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace for cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes, groups, repositories, robot accounts, and IAM resources through a REST interface.
+  version: v1
+  contact:
+    name: Upbound Support
+    url: https://docs.upbound.io
+  termsOfService: https://www.upbound.io/terms
+servers:
+- url: https://api.upbound.io/v1
+  description: Upbound Cloud API
+security:
+- BearerToken: []
+tags:
+- name: Teams
+  description: Team and membership management
+paths:
+  /organizations/{orgName}/teams:
+    get:
+      operationId: listTeams
+      summary: List Teams
+      description: List all teams in an organization.
+      tags:
+      - Teams
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        '200':
+          description: List of teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createTeam
+      summary: Create Team
+      description: Create a new team in an organization.
+      tags:
+      - Teams
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRequest'
+      responses:
+        '201':
+          description: Team created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{orgName}/teams/{teamName}:
+    get:
+      operationId: getTeam
+      summary: Get Team
+      description: Retrieve details of a specific team.
+      tags:
+      - Teams
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: teamName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Team details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteTeam
+      summary: Delete Team
+      description: Delete a team from an organization.
+      tags:
+      - Teams
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: teamName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Team deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication token missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        organizationName:
+          type: string
+        description:
+          type: string
+        memberCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+    TeamList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+        count:
+          type: integer
+    TeamRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: Upbound personal access token or robot token

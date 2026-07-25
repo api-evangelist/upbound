@@ -1,0 +1,210 @@
+openapi: 3.0.3
+info:
+  title: Upbound Control Planes Repositories API
+  description: Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace for cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes, groups, repositories, robot accounts, and IAM resources through a REST interface.
+  version: v1
+  contact:
+    name: Upbound Support
+    url: https://docs.upbound.io
+  termsOfService: https://www.upbound.io/terms
+servers:
+- url: https://api.upbound.io/v1
+  description: Upbound Cloud API
+security:
+- BearerToken: []
+tags:
+- name: Repositories
+  description: Package registry and repository management
+paths:
+  /organizations/{orgName}/repositories:
+    get:
+      operationId: listRepositories
+      summary: List Repositories
+      description: List all package repositories in an organization.
+      tags:
+      - Repositories
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        '200':
+          description: List of repositories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositoryList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createRepository
+      summary: Create Repository
+      description: Create a new package repository.
+      tags:
+      - Repositories
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepositoryRequest'
+      responses:
+        '201':
+          description: Repository created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Repository'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{orgName}/repositories/{repoName}:
+    get:
+      operationId: getRepository
+      summary: Get Repository
+      description: Retrieve details of a specific package repository.
+      tags:
+      - Repositories
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repoName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Repository details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Repository'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteRepository
+      summary: Delete Repository
+      description: Delete a package repository.
+      tags:
+      - Repositories
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: repoName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Repository deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Repository:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        organizationName:
+          type: string
+        public:
+          type: boolean
+          description: Whether the repository is publicly accessible
+        description:
+          type: string
+        packageCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RepositoryList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Repository'
+        count:
+          type: integer
+    RepositoryRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+          default: false
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication token missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: Upbound personal access token or robot token

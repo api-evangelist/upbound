@@ -1,0 +1,241 @@
+openapi: 3.0.3
+info:
+  title: Upbound Control Planes Robots API
+  description: Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace for cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes, groups, repositories, robot accounts, and IAM resources through a REST interface.
+  version: v1
+  contact:
+    name: Upbound Support
+    url: https://docs.upbound.io
+  termsOfService: https://www.upbound.io/terms
+servers:
+- url: https://api.upbound.io/v1
+  description: Upbound Cloud API
+security:
+- BearerToken: []
+tags:
+- name: Robots
+  description: Robot account and token management
+paths:
+  /organizations/{orgName}/robots:
+    get:
+      operationId: listRobots
+      summary: List Robots
+      description: List all robot accounts in an organization.
+      tags:
+      - Robots
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of robot accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createRobot
+      summary: Create Robot
+      description: Create a new robot account for CI/CD automation.
+      tags:
+      - Robots
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotRequest'
+      responses:
+        '201':
+          description: Robot account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Robot'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{orgName}/robots/{robotName}:
+    get:
+      operationId: getRobot
+      summary: Get Robot
+      description: Retrieve details of a specific robot account.
+      tags:
+      - Robots
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: robotName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Robot account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Robot'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteRobot
+      summary: Delete Robot
+      description: Delete a robot account.
+      tags:
+      - Robots
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: robotName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Robot account deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{orgName}/robots/{robotName}/tokens:
+    post:
+      operationId: createRobotToken
+      summary: Create Robot Token
+      description: Create a new API token for a robot account.
+      tags:
+      - Robots
+      parameters:
+      - name: orgName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: robotName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Token name
+      responses:
+        '201':
+          description: Robot token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotToken'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Robot:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        organizationName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    RobotToken:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        token:
+          type: string
+          description: Secret token value (only returned on creation)
+        createdAt:
+          type: string
+          format: date-time
+    RobotList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Robot'
+        count:
+          type: integer
+    RobotRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication token missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: Upbound personal access token or robot token
