@@ -5,7 +5,20 @@ description: >-
   cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes,
   package repositories, teams, and robot accounts.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/upbound.png
 tags:
   - Cloud Infrastructure
   - Crossplane
@@ -17,26 +30,76 @@ created: '2026-03-27'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: upbound:upbound
-    name: Upbound API
-    description: >-
-      The Upbound API provides programmatic management of the Upbound universal cloud platform, including organizations,
-      teams, managed Crossplane control planes, package repositories, and robot accounts for CI/CD automation.
-    humanURL: https://www.upbound.io
-    baseURL: https://api.upbound.io/v1
-    tags:
-      - Crossplane
-      - Developer Experience
-      - Internal Developer Platform
-      - Control Planes
-      - Organizations
-    properties:
-      - type: Documentation
-        url: https://docs.upbound.io
-      - type: GettingStarted
-        url: https://docs.upbound.io/quickstart
-      - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/openapi/upbound-openapi.yml
+- aid: upbound:upbound-control-planes-api
+  name: Upbound Control Planes API
+  description: Managed control plane lifecycle
+  humanURL: https://www.upbound.io
+  baseURL: https://api.upbound.io/v1
+  tags:
+  - Control Planes
+  properties:
+  - type: OpenAPI
+    url: openapi/upbound-control-planes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.upbound.io
+  - type: GettingStarted
+    url: https://docs.upbound.io/quickstart
+- aid: upbound:upbound-organizations-api
+  name: Upbound Organizations API
+  description: Organization management
+  humanURL: https://www.upbound.io
+  baseURL: https://api.upbound.io/v1
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/upbound-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.upbound.io
+  - type: GettingStarted
+    url: https://docs.upbound.io/quickstart
+- aid: upbound:upbound-repositories-api
+  name: Upbound Repositories API
+  description: Package registry and repository management
+  humanURL: https://www.upbound.io
+  baseURL: https://api.upbound.io/v1
+  tags:
+  - Repositories
+  properties:
+  - type: OpenAPI
+    url: openapi/upbound-repositories-api-openapi.yml
+  - type: Documentation
+    url: https://docs.upbound.io
+  - type: GettingStarted
+    url: https://docs.upbound.io/quickstart
+- aid: upbound:upbound-robots-api
+  name: Upbound Robots API
+  description: Robot account and token management
+  humanURL: https://www.upbound.io
+  baseURL: https://api.upbound.io/v1
+  tags:
+  - Robots
+  properties:
+  - type: OpenAPI
+    url: openapi/upbound-robots-api-openapi.yml
+  - type: Documentation
+    url: https://docs.upbound.io
+  - type: GettingStarted
+    url: https://docs.upbound.io/quickstart
+- aid: upbound:upbound-teams-api
+  name: Upbound Teams API
+  description: Team and membership management
+  humanURL: https://www.upbound.io
+  baseURL: https://api.upbound.io/v1
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/upbound-teams-api-openapi.yml
+  - type: Documentation
+    url: https://docs.upbound.io
+  - type: GettingStarted
+    url: https://docs.upbound.io/quickstart
 common:
   - type: AgenticAccess
     url: agentic-access/upbound-agentic-access.yml
