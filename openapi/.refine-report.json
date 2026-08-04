@@ -1,0 +1,22 @@
+{
+  "provider": "upbound",
+  "sources": [
+    "upbound-control-planes-api-openapi.yml",
+    "upbound-organizations-api-openapi.yml",
+    "upbound-repositories-api-openapi.yml",
+    "upbound-robots-api-openapi.yml",
+    "upbound-teams-api-openapi.yml"
+  ],
+  "outputs": [
+    "upbound-control-planes-api-openapi.yml",
+    "upbound-organizations-api-openapi.yml",
+    "upbound-repositories-api-openapi.yml",
+    "upbound-robots-api-openapi.yml",
+    "upbound-teams-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
