@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Upbound Control Planes API
   description: Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace for cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes, groups, repositories, robot accounts, and IAM resources through a REST interface.
@@ -169,21 +169,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    ControlPlaneRequest:
-      type: object
-      required:
-      - name
-      - configuration
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        configuration:
-          type: string
-          description: Crossplane configuration package (e.g., xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)
-        region:
-          type: string
     ControlPlane:
       type: object
       properties:
@@ -220,6 +205,21 @@ components:
         updatedAt:
           type: string
           format: date-time
+    ControlPlaneRequest:
+      type: object
+      required:
+      - name
+      - configuration
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        configuration:
+          type: string
+          description: Crossplane configuration package (e.g., xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)
+        region:
+          type: string
     ControlPlaneList:
       type: object
       properties:
@@ -239,12 +239,6 @@ components:
         details:
           type: string
   responses:
-    Unauthorized:
-      description: Authentication token missing or invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     BadRequest:
       description: Invalid request body or parameters
       content:
@@ -253,6 +247,12 @@ components:
             $ref: '#/components/schemas/Error'
     NotFound:
       description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication token missing or invalid
       content:
         application/json:
           schema:
