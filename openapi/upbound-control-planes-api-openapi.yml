@@ -169,6 +169,39 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+    ControlPlaneRequest:
+      type: object
+      required:
+      - name
+      - configuration
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        configuration:
+          type: string
+          description: Crossplane configuration package (e.g., xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)
+        region:
+          type: string
+    ControlPlaneList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ControlPlane'
+        count:
+          type: integer
     ControlPlane:
       type: object
       properties:
@@ -205,48 +238,15 @@ components:
         updatedAt:
           type: string
           format: date-time
-    ControlPlaneRequest:
-      type: object
-      required:
-      - name
-      - configuration
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        configuration:
-          type: string
-          description: Crossplane configuration package (e.g., xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)
-        region:
-          type: string
-    ControlPlaneList:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ControlPlane'
-        count:
-          type: integer
-    Error:
-      type: object
-      properties:
-        status:
-          type: integer
-        message:
-          type: string
-        details:
-          type: string
   responses:
-    BadRequest:
-      description: Invalid request body or parameters
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found
+    BadRequest:
+      description: Invalid request body or parameters
       content:
         application/json:
           schema:
