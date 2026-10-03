@@ -168,6 +168,25 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication token missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -178,30 +197,6 @@ components:
           type: string
         details:
           type: string
-    ControlPlaneRequest:
-      type: object
-      required:
-      - name
-      - configuration
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        configuration:
-          type: string
-          description: Crossplane configuration package (e.g., xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)
-        region:
-          type: string
-    ControlPlaneList:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ControlPlane'
-        count:
-          type: integer
     ControlPlane:
       type: object
       properties:
@@ -238,25 +233,30 @@ components:
         updatedAt:
           type: string
           format: date-time
-  responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request body or parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication token missing or invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    ControlPlaneRequest:
+      type: object
+      required:
+      - name
+      - configuration
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        configuration:
+          type: string
+          description: Crossplane configuration package (e.g., xpkg.upbound.io/upbound/platform-ref-aws:v0.9.0)
+        region:
+          type: string
+    ControlPlaneList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ControlPlane'
+        count:
+          type: integer
   securitySchemes:
     BearerToken:
       type: http
