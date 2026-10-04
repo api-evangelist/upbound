@@ -151,15 +151,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        status:
-          type: integer
-        message:
-          type: string
-        details:
-          type: string
     Repository:
       type: object
       properties:
@@ -203,6 +194,15 @@ components:
         public:
           type: boolean
           default: false
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
   securitySchemes:
     BearerToken:
       type: http

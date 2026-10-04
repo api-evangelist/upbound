@@ -188,15 +188,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        status:
-          type: integer
-        message:
-          type: string
-        details:
-          type: string
     ControlPlane:
       type: object
       properties:
@@ -257,6 +248,15 @@ components:
             $ref: '#/components/schemas/ControlPlane'
         count:
           type: integer
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
   securitySchemes:
     BearerToken:
       type: http

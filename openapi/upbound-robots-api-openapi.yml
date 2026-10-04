@@ -180,15 +180,19 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    RobotList:
+    RobotToken:
       type: object
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Robot'
-        count:
-          type: integer
+        id:
+          type: string
+        name:
+          type: string
+        token:
+          type: string
+          description: Secret token value (only returned on creation)
+        createdAt:
+          type: string
+          format: date-time
     RobotRequest:
       type: object
       required:
@@ -221,19 +225,15 @@ components:
         createdAt:
           type: string
           format: date-time
-    RobotToken:
+    RobotList:
       type: object
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        token:
-          type: string
-          description: Secret token value (only returned on creation)
-        createdAt:
-          type: string
-          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Robot'
+        count:
+          type: integer
   securitySchemes:
     BearerToken:
       type: http
