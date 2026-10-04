@@ -117,6 +117,9 @@ apis:
   - type: GettingStarted
     url: https://docs.upbound.io/quickstart
 common:
+  - type: CapabilityMap
+    url: capabilities/upbound-capability-edges.yml
+    name: Upbound Business Capability Map
   - type: AgenticAccess
     url: agentic-access/upbound-agentic-access.yml
   - type: TrustCenter

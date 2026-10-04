@@ -1,0 +1,36 @@
+slug: upbound
+provider: Upbound
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Robots
+  spec_file: upbound-robots-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /organizations/{orgName}/robots/{robotName}/tokens createRobotToken Create Robot Token;
+    schema RobotToken
+  reason: Robot accounts with token issuance are machine identities/credentials — identity and access
+    management for the platform, not a line-of-business capability.
+- tag: Control Planes
+  spec_file: upbound-control-planes-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: POST /organizations/{orgName}/controlplanes createControlPlane 'Create Control Plane'; DELETE
+    ... deleteControlPlane; schemas ControlPlane, ControlPlaneRequest
+  reason: Lifecycle management of managed Crossplane control planes — provisioning and tearing down cloud
+    infrastructure management resources. IT Infrastructure Management is the honest cross-industry fit
+    for this devtool; tenant provisioning is a plausible alternative, hence not higher confidence.
