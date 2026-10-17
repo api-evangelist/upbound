@@ -132,14 +132,14 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    BadRequest:
-      description: Invalid request body or parameters
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found
+    BadRequest:
+      description: Invalid request body or parameters
       content:
         application/json:
           schema:
@@ -151,6 +151,24 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
+    TeamList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+        count:
+          type: integer
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
     Team:
       type: object
       properties:
@@ -175,24 +193,6 @@ components:
         name:
           type: string
         description:
-          type: string
-    TeamList:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Team'
-        count:
-          type: integer
-    Error:
-      type: object
-      properties:
-        status:
-          type: integer
-        message:
-          type: string
-        details:
           type: string
   securitySchemes:
     BearerToken:
