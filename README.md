@@ -1,4 +1,4 @@
-# Upbound (upbound)
+# Upbound
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,61 +66,169 @@
 
 Upbound is a universal cloud platform built on Crossplane, providing managed control planes and a marketplace for cloud infrastructure APIs. The Upbound API enables programmatic management of organizations, spaces, control planes, package repositories, teams, and robot accounts.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/apis.yml)
+**Areas:** Cloud Infrastructure · Crossplane · Developer Experience · Internal Developer Platform · Platform Engineering
 
-## Scope
+## Upbound on APIs.io
 
-- **Type:** Index
+Everything profiled for Upbound is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/upbound/](https://apis.io/providers/upbound/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (5)
 
-- Cloud Infrastructure
-- Crossplane
-- Developer Experience
-- Internal Developer Platform
-- Platform Engineering
+- [Upbound Control Planes API](https://apis.io/apis/upbound/upbound-control-planes-api/) — Managed control plane lifecycle
+- [Upbound Organizations API](https://apis.io/apis/upbound/upbound-organizations-api/) — Organization management
+- [Upbound Repositories API](https://apis.io/apis/upbound/upbound-repositories-api/) — Package registry and repository management
+- [Upbound Robots API](https://apis.io/apis/upbound/upbound-robots-api/) — Robot account and token management
+- [Upbound Teams API](https://apis.io/apis/upbound/upbound-teams-api/) — Team and membership management
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-27
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Upbound API
+Model Context Protocol servers that expose the API to agents.
 
-The Upbound API provides programmatic management of the Upbound universal cloud platform, including organizations, teams, managed Crossplane control planes, package repositories, and robot accounts for CI/CD automation.
+- [MCP Server](https://apis.io/servers/upbound/mcp-server/)
 
-- **Human URL:** [https://www.upbound.io](https://www.upbound.io)
-- **Base URL:** `https://api.upbound.io/v1`
+#### Agentic access (1)
 
-#### Tags
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- Crossplane
-- Developer Experience
-- Internal Developer Platform
-- Control Planes
-- Organizations
+- [Upbound Agentic Access](https://apis.io/agentic-access/upbound/upbound-agentic-access/)
 
-#### Properties
+#### JSON Schema (1)
 
-- [Documentation](https://docs.upbound.io)
-- [Getting Started](https://docs.upbound.io/quickstart)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/upbound/refs/heads/main/openapi/upbound-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/upbound.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/upbound.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+The data models the API reads and writes.
 
-## Common Properties
+- [Upbound Control Plane](https://apis.io/schemas/upbound/upbound-control-plane/)
 
-- [LinkedIn](https://www.linkedin.com/company/upbound-io)
+#### JSON Structure (1)
+
+Data models expressed in JSON Structure.
+
+- [Upbound Control Plane Structure](https://apis.io/json-structure/upbound/upbound-control-plane-structure/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Upbound Context](https://apis.io/jsonld/upbound/upbound-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Upbound Vocabulary](https://apis.io/vocabularies/upbound/upbound-vocabulary/)
+
+#### Examples (2)
+
+Example requests and responses.
+
+- [Upbound Create Control Plane Example](https://apis.io/examples/upbound/upbound-create-control-plane-example/)
+- [Upbound List Control Planes Example](https://apis.io/examples/upbound/upbound-list-control-planes-example/)
+
+#### Collections (6)
+
+Postman and Open Collection request collections.
+
+- [Upbound API](https://apis.io/collections/upbound/open-upbound/)
+- [Upbound Control Planes API](https://apis.io/collections/upbound/open-upbound-control-planes-api/)
+- [Upbound Control Planes Organizations API](https://apis.io/collections/upbound/open-upbound-organizations-api/)
+- [Upbound Control Planes Repositories API](https://apis.io/collections/upbound/open-upbound-repositories-api/)
+- [Upbound Control Planes Robots API](https://apis.io/collections/upbound/open-upbound-robots-api/)
+- [Upbound Control Planes Teams API](https://apis.io/collections/upbound/open-upbound-teams-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Upbound — jsonschema rules](https://apis.io/rules/upbound/upbound-jsonschema-spectral-rules/)
+- [Upbound API Rules](https://apis.io/rules/upbound/upbound-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Upbound Authentication](https://apis.io/security/upbound/upbound-authentication/)
+- [Upbound Domain Security](https://apis.io/security/upbound/upbound-domain-security/)
+- [Upbound Trust Center](https://apis.io/security/upbound/upbound-trust-center/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Upbound Plans Pricing](https://apis.io/plans/upbound/upbound-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Upbound Rate Limits](https://apis.io/rate-limits/upbound/upbound-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Upbound Finops](https://apis.io/finops/upbound/upbound-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.upbound.io)
 - [Documentation](https://docs.upbound.io)
-- [GitHub Organization](https://github.com/upbound)
-- [Marketplace](https://marketplace.upbound.io)
-- [M C P Server](https://github.com/upbound/marketplace-mcp-server)
-- [L L Ms Txt](https://docs.upbound.io/llms.txt)
+- [Blog](https://www.upbound.io/blog)
+- [GitHub](https://github.com/upbound)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 33.7** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.7 |
+| Contract quality | 61.5 |
+| Contract governance | 13.6 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 15.8 |
+
+**Agent readiness 21.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 21.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/upbound/](https://apis.io/providers/upbound/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Upbound: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/upbound/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
